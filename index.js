@@ -89,6 +89,8 @@ app.post('/cart/add', authenticateUser, async (req, res) => {
 // Remove from Cart
 app.post('/cart/remove', authenticateUser, async (req, res) => {
   const { productId } = req.body;
+  console.log(productId);
+  
   if (!productId) return res.status(400).json({ error: 'Product ID required' });
 
   await db.collection(COLLECTION_NAME).updateOne(
