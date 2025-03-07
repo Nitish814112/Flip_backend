@@ -51,6 +51,21 @@ const authenticateUser = (req, res, next) => {
   }
 };
 
+app.delete("/cart/empty", authenticateUser, async (req, res) => {
+  try {
+    await db.collection(USER_COLLECTION).updateOne(
+      { email: req.user.email },
+      { $set: { cart: [] } }
+    );
+    res.json({ message: "Cart emptied successfully" });
+    console.log("empty");
+    
+  } catch (error) {
+    console.error("Error emptying cart:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 app.get("/data", async (req, res) => {
   try {
     const data = await db.collection(process.env.COLLECTION_NAME).find().toArray();
